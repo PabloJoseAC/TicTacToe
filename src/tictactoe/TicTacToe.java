@@ -138,7 +138,10 @@ public class TicTacToe {
                         //CHECK IF THE KEY PRESSED IS A LETTER OR NUMBER USING ASCII CHARACTERS
                         if((chrKey >= 48 && chrKey <= 57) || (chrKey >= 65 && chrKey <= 90)
                                 || (chrKey >= 97 && chrKey <= 122)){
-                            strCirclePlayer += chrKey;
+                        	//DO NOT ADD LETTER TO NAME IF IT IS LONGER THAN 10 LETTERS
+                        	if(strCirclePlayer.length() < 10){
+                        		strCirclePlayer += chrKey;
+                        	}
                         //CHECK IF THE KEY PRESSED IS THE BACKSPACE KEY
                         }else if(chrKey == 8){
                             //TAKE AWAY THE LAST LETTER FROM THE NAME
@@ -170,7 +173,10 @@ public class TicTacToe {
                         //CHECK IF THE KEY PRESSED IS A LETTER OR NUMBER USING ASCII CHARACTERS
                         if((chrKey >= 48 && chrKey <= 57) || (chrKey >= 65 && chrKey <= 90)
                                 || (chrKey >= 97 && chrKey <= 122)){
-                            strCirclePlayer += chrKey;
+                        	//DO NOT ADD LETTER TO NAME IF IT IS LONGER THAN 10 LETTERS
+                        	if(strCirclePlayer.length() < 10){
+                        		strCirclePlayer += chrKey;
+                        	}
                         //CHECK IF THE KEY PRESSED IS THE BACKSPACE KEY
                         }else if(chrKey == 8){
                             //TAKE AWAY THE LAST LETTER FROM THE NAME

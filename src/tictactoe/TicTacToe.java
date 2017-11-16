@@ -2,6 +2,7 @@ package tictactoe;
 
 import arc.*;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 public class TicTacToe {
@@ -14,7 +15,7 @@ public class TicTacToe {
         int intMouseX;
         int intMouseY;
         int intMouseButton;
-        int intSwapScreen = 0;
+        int intSwapScreen = 2;
         int intScreen = 0;
         int intWinner = 0;
 
@@ -36,6 +37,10 @@ public class TicTacToe {
 
         String strCirclePlayer = "Player 1";
         String strCrossPlayer = "Player 2";
+
+        Font fntNormal = con.loadFont("src/res/sodorb.ttf", 24);
+        Font fntMedium = con.loadFont("src/res/sodorb.ttf", 36);
+        Font fntBig = con.loadFont("src/res/sodorb.ttf", 350);
 
         //MAIN MENU SCREEN
         BufferedImage imgMainMenu = con.loadImage("src/res/MainMenu.jpg");
@@ -80,10 +85,13 @@ public class TicTacToe {
                 }
             }
 
+            //SET THE DEFAULT FONT
+            con.setDrawFont(fntNormal);
+
             //CLEAR THE SCREEN
             con.setDrawColor(clrBackground);
             con.fillRect(0, 0, 800, 600);
-
+            
             //RUN SCREEN SPECIFIC CODE
             if(intScreen == 0){
                 //DRAW BACKGROUND IMAGE
@@ -130,42 +138,6 @@ public class TicTacToe {
                 
                 //CHECK IF NO PIECE IS SELECTED
                 if(intPieceSelection == 0){
-                    //CHECK IF MOUSE IS INSIDE OF THE BLUE CIRCLE SELECTION RECTANGLE
-                    if((intMouseX > 75 && intMouseX < 365) && (intMouseY > 95 && intMouseY < 485)){
-                        //CHECK IF BUTTON BEING CLICKED
-                        if(intMouseButton == 1){
-                            con.setDrawColor(Color.WHITE);
-                            //SETTING THE BLUE CIRCLE PIECE TO BE THE CURRENTLY SELECTED ONE
-                            intPieceSelection = 1;
-                        }else{
-                            con.setDrawColor(clrGreen);
-                        }
-                    }else{
-                        con.setDrawColor(clrGray);
-                    }
-                    con.fillRect(75, 95, 365 - 75, 485 - 95);
-                    con.setDrawColor(Color.BLACK);
-                    //DRAW CIRCLE PLAYER NAME
-                    con.drawString(strCirclePlayer, 220 - (strCirclePlayer.length() * 6), 165);
-
-                    //CHECK IF MOUSE IS INSIDE OF THE RED CROSS SELECTION RECTANGLE
-                    if((intMouseX > 415 && intMouseX < 705) && (intMouseY > 95 && intMouseY < 485)){
-                        //CHECK IF BUTTON BEING CLICKED
-                        if(intMouseButton == 1){
-                            con.setDrawColor(Color.WHITE);
-                            //SETTING THE RED CROSS PIECE TO BE THE CURRENTLY SELECTED ONE
-                            intPieceSelection = 2;
-                        }else{
-                            con.setDrawColor(clrGreen);
-                        }
-                    }else{
-                        con.setDrawColor(clrGray);
-                    }
-                    con.fillRect(415, 95, 705 - 415, 485 - 95);
-                    con.setDrawColor(Color.BLACK);
-                    //DRAW CROSS PLAYER NAME
-                    con.drawString(strCrossPlayer, 560 - (strCrossPlayer.length() * 6), 165);
-
                     //CHECK IF MOUSE IS INSIDE OF THE BACK BUTTON
                     if((intMouseX > 180 && intMouseX < 380) && (intMouseY > 500 && intMouseY < 570)){
                         //CHECK IF BUTTON BEING CLICKED
@@ -204,6 +176,45 @@ public class TicTacToe {
                     con.fillRect(400, 500, 600 - 400, 570 - 500);
                     con.setDrawColor(Color.BLACK);
                     con.drawString("Continue", 450, 543);
+
+                    //SET NAME FONT
+                    con.setDrawFont(fntMedium);
+
+                    //CHECK IF MOUSE IS INSIDE OF THE BLUE CIRCLE SELECTION RECTANGLE
+                    if((intMouseX > 75 && intMouseX < 365) && (intMouseY > 95 && intMouseY < 485)){
+                        //CHECK IF BUTTON BEING CLICKED
+                        if(intMouseButton == 1){
+                            con.setDrawColor(Color.WHITE);
+                            //SETTING THE BLUE CIRCLE PIECE TO BE THE CURRENTLY SELECTED ONE
+                            intPieceSelection = 1;
+                        }else{
+                            con.setDrawColor(clrGreen);
+                        }
+                    }else{
+                        con.setDrawColor(clrGray);
+                    }
+                    con.fillRect(75, 95, 365 - 75, 485 - 95);
+                    con.setDrawColor(Color.BLACK);
+                    //DRAW CIRCLE PLAYER NAME
+                    con.drawString(strCirclePlayer, 200 - (strCirclePlayer.length() * 7), 165);
+
+                    //CHECK IF MOUSE IS INSIDE OF THE RED CROSS SELECTION RECTANGLE
+                    if((intMouseX > 415 && intMouseX < 705) && (intMouseY > 95 && intMouseY < 485)){
+                        //CHECK IF BUTTON BEING CLICKED
+                        if(intMouseButton == 1){
+                            con.setDrawColor(Color.WHITE);
+                            //SETTING THE RED CROSS PIECE TO BE THE CURRENTLY SELECTED ONE
+                            intPieceSelection = 2;
+                        }else{
+                            con.setDrawColor(clrGreen);
+                        }
+                    }else{
+                        con.setDrawColor(clrGray);
+                    }
+                    con.fillRect(415, 95, 705 - 415, 485 - 95);
+                    con.setDrawColor(Color.BLACK);
+                    //DRAW CROSS PLAYER NAME
+                    con.drawString(strCrossPlayer, 540 - (strCrossPlayer.length() * 7), 165);
                 //CHECK IF THE BLUE CIRCLE PIECE HAS BEEN SELECTED
                 }else if(intPieceSelection == 1){
                     //MAKE SURE IT DOESNT DETECT KEYS THAT ARE HELD DOWN
@@ -234,18 +245,24 @@ public class TicTacToe {
                         //SET LAST KEY TO THIS KEY
                         chrLastKey = chrKey;
                     }
+                    //SET NAME FONT
+                    con.setDrawFont(fntMedium);
+
                     con.setDrawColor(Color.WHITE);
                     con.fillRect(75, 95, 365 - 75, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CIRCLE PLAYER NAME
-                    con.drawString(strCirclePlayer, 220 - (strCirclePlayer.length() * 6), 165);
+                    con.drawString(strCirclePlayer, 200 - (strCirclePlayer.length() * 7), 165);
 
                     //DRAW RED CROSS PIECE STUFF
                     con.setDrawColor(clrGray);
                     con.fillRect(415, 95, 705 - 415, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CROSS PLAYER NAME
-                    con.drawString(strCrossPlayer, 560 - (strCrossPlayer.length() * 6), 165);
+                    con.drawString(strCrossPlayer, 540 - (strCrossPlayer.length() * 7), 165);
+                    
+                    //SET DEFAULT FONT
+                    con.setDrawFont(fntNormal);
 
                     //DRAW BACK BUTTON
                     con.setDrawColor(clrGray);
@@ -288,18 +305,25 @@ public class TicTacToe {
                         //SET LAST KEY TO THIS KEY
                         chrLastKey = chrKey;
                     }
+                    //SET NAME FONT
+                    con.setDrawFont(fntMedium);
+
+                    //DRAW RED CROSS PIECE STUFF
                     con.setDrawColor(Color.WHITE);
                     con.fillRect(415, 95, 705 - 415, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CROSS PLAYER NAME
-                    con.drawString(strCrossPlayer, 560 - (strCrossPlayer.length() * 6), 165);
+                    con.drawString(strCrossPlayer, 540 - (strCrossPlayer.length() * 7), 165);
 
                     //DRAW BLUE CIRCLE PIECE STUFF
                     con.setDrawColor(clrGray);
                     con.fillRect(75, 95, 365 - 75, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CIRCLE PLAYER NAME
-                    con.drawString(strCirclePlayer, 220 - (strCirclePlayer.length() * 6), 165);
+                    con.drawString(strCirclePlayer, 200 - (strCirclePlayer.length() * 7), 165);
+                    
+                    //SET DEFAULT FONT
+                    con.setDrawFont(fntNormal);
 
                     //DRAW BACK BUTTON
                     con.setDrawColor(clrGray);
@@ -707,7 +731,6 @@ public class TicTacToe {
                 if(intWinner > 0){
                     intSwapScreen = 4;
                     intVarsInit = 0;
-                    con.sleep(1000);
                 //IF THERE IS NO WINNER BUT ALL TILES ARE FILLED, GO TO THE TIE SCREEN
                 }else if(intFilledTiles >= 9){
                     intSwapScreen = 3;
@@ -719,14 +742,83 @@ public class TicTacToe {
                 }
             }else if(intScreen == 3){
                 //DRAW BACKGROUND CIRCLE AND CROSS
-                con.drawImage(imgCross4, 280, 120);
-                con.drawImage(imgCircle4, 0, 120);
+                con.drawImage(imgCross4, 250, 95);
+                con.drawImage(imgCircle4, -30, 95);
                 //DRAW TIE WITH ENLARGED FONT
-                con.setTextFont(con.loadFont("", 100));
-                con.drawString("TIE", 60, 460);
-                //SLEEP FOR 3 SECONDS BEFORE GOING BACK TO THE GAME SCREEN
-                con.sleep(3000);
+                con.setDrawFont(fntBig);
+                con.setDrawColor(Color.WHITE);
+                con.drawString("TIE", 120, 420);
+                //REPAINT AHEAD OF TIME
+                con.repaint();
+                //GO BACK TO THE GAME SCREEN AFTER 3 SECONDS
                 intSwapScreen = 2;
+                con.sleep(3000);
+            }else if(intScreen == 4){
+                //SET MEDIUM FONT
+                con.setDrawFont(fntMedium);
+                //DRAW CIRCLE OR CROSS AND THE NAME OF THE PLAYER WHO WON
+                con.setDrawColor(Color.BLACK);
+                if(intWinner == 1){
+                    con.drawImage(imgCircle4, 120, -50);
+                    con.drawString(strCirclePlayer + " Wins!", 360 - ((strCirclePlayer.length() + 6) * 6), 160);
+                }else if(intWinner == 2){
+                    con.drawImage(imgCross4, 130, -50);
+                    con.drawString(strCrossPlayer + " Wins!", 360 - ((strCirclePlayer.length() + 6) * 6), 160);
+                }
+
+                //SET DEFAULT FONT
+                con.setDrawFont(fntNormal);
+
+                //CHECK IF MOUSE IS INSIDE OF THE PLAY AGAIN BUTTON
+                if((intMouseX > 240 && intMouseX < 555) && (intMouseY > 290 && intMouseY < 360)){
+                    //CHECK IF BUTTON BEING CLICKED
+                    if(intMouseButton == 1){
+                        con.setDrawColor(Color.WHITE);
+                        //CHANGING TO GAME SCREEN
+                        intSwapScreen = 2;
+                    }else{
+                        con.setDrawColor(clrGreen);
+                    }
+                }else{
+                    con.setDrawColor(clrGray);
+                }
+                con.fillRect(240, 290, 555 - 240, 360 - 290);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("Play Again", 335, 335);
+
+                //CHECK IF MOUSE IS INSIDE OF THE BACK TO PLAYER SELECTION BUTTON
+                if((intMouseX > 240 && intMouseX < 555) && (intMouseY > 390 && intMouseY < 460)){
+                    //CHECK IF BUTTON BEING CLICKED
+                    if(intMouseButton == 1){
+                        con.setDrawColor(Color.WHITE);
+                        //CHANGING TO SELECTION SCREEN
+                        intSwapScreen = 1;
+                    }else{
+                        con.setDrawColor(clrGreen);
+                    }
+                }else{
+                    con.setDrawColor(clrGray);
+                }
+                con.fillRect(240, 390, 555 - 240, 460 - 390);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("Back To Player Selection", 258, 435);
+
+                //CHECK IF MOUSE IS INSIDE OF THE BACK TO MAIN MENU BUTTON
+                if((intMouseX > 240 && intMouseX < 555) && (intMouseY > 490 && intMouseY < 560)){
+                    //CHECK IF BUTTON BEING CLICKED
+                    if(intMouseButton == 1){
+                        con.setDrawColor(Color.WHITE);
+                        //CHANGING TO MAIN MENU SCREEN
+                        intSwapScreen = 0;
+                    }else{
+                        con.setDrawColor(clrGreen);
+                    }
+                }else{
+                    con.setDrawColor(clrGray);
+                }
+                con.fillRect(240, 490, 555 - 240, 560 - 490);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("Back To Main Menu", 288, 535);
             }
             
             //PAINT EVERYTHING TO THE SCREEN

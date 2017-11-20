@@ -15,9 +15,11 @@ public class TicTacToe {
         int intMouseX;
         int intMouseY;
         int intMouseButton;
-        int intSwapScreen = 2;
+        int intSwapScreen = 0;
         int intScreen = 0;
         int intWinner = 0;
+        int intCircleWins = 0;
+        int intCrossWins = 0;
 
         char chrKey;
         
@@ -131,6 +133,10 @@ public class TicTacToe {
                 con.setDrawColor(Color.BLACK);
                 con.drawString("Exit", 375, 405);
             }else if(intScreen == 1){
+                //RESET SCORES
+                intCircleWins = 0;
+                intCrossWins = 0;
+
                 //DRAW INSTRUCTIONS AT THE TOP
                 con.setDrawColor(Color.BLACK);
                 con.drawString("Select a piece and enter the name of the Player for it", 90, 40);
@@ -196,7 +202,7 @@ public class TicTacToe {
                     con.fillRect(75, 95, 365 - 75, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CIRCLE PLAYER NAME
-                    con.drawString(strCirclePlayer, 200 - (strCirclePlayer.length() * 7), 165);
+                    con.drawString(strCirclePlayer, 190 - (strCirclePlayer.length() * 7), 165);
 
                     //CHECK IF MOUSE IS INSIDE OF THE RED CROSS SELECTION RECTANGLE
                     if((intMouseX > 415 && intMouseX < 705) && (intMouseY > 95 && intMouseY < 485)){
@@ -214,7 +220,7 @@ public class TicTacToe {
                     con.fillRect(415, 95, 705 - 415, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CROSS PLAYER NAME
-                    con.drawString(strCrossPlayer, 540 - (strCrossPlayer.length() * 7), 165);
+                    con.drawString(strCrossPlayer, 530 - (strCrossPlayer.length() * 7), 165);
                 //CHECK IF THE BLUE CIRCLE PIECE HAS BEEN SELECTED
                 }else if(intPieceSelection == 1){
                     //MAKE SURE IT DOESNT DETECT KEYS THAT ARE HELD DOWN
@@ -252,14 +258,14 @@ public class TicTacToe {
                     con.fillRect(75, 95, 365 - 75, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CIRCLE PLAYER NAME
-                    con.drawString(strCirclePlayer, 200 - (strCirclePlayer.length() * 7), 165);
+                    con.drawString(strCirclePlayer, 190 - (strCirclePlayer.length() * 7), 165);
 
                     //DRAW RED CROSS PIECE STUFF
                     con.setDrawColor(clrGray);
                     con.fillRect(415, 95, 705 - 415, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CROSS PLAYER NAME
-                    con.drawString(strCrossPlayer, 540 - (strCrossPlayer.length() * 7), 165);
+                    con.drawString(strCrossPlayer, 530 - (strCrossPlayer.length() * 7), 165);
                     
                     //SET DEFAULT FONT
                     con.setDrawFont(fntNormal);
@@ -313,14 +319,14 @@ public class TicTacToe {
                     con.fillRect(415, 95, 705 - 415, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CROSS PLAYER NAME
-                    con.drawString(strCrossPlayer, 540 - (strCrossPlayer.length() * 7), 165);
+                    con.drawString(strCrossPlayer, 530 - (strCrossPlayer.length() * 7), 165);
 
                     //DRAW BLUE CIRCLE PIECE STUFF
                     con.setDrawColor(clrGray);
                     con.fillRect(75, 95, 365 - 75, 485 - 95);
                     con.setDrawColor(Color.BLACK);
                     //DRAW CIRCLE PLAYER NAME
-                    con.drawString(strCirclePlayer, 200 - (strCirclePlayer.length() * 7), 165);
+                    con.drawString(strCirclePlayer, 190 - (strCirclePlayer.length() * 7), 165);
                     
                     //SET DEFAULT FONT
                     con.setDrawFont(fntNormal);
@@ -343,7 +349,6 @@ public class TicTacToe {
             }else if(intScreen == 2){
                 //INITIALIZE GAME VARIABLES
                 if(intVarsInit == 0){
-                    System.out.println("GAME ON");
                     intWinner = 0;
                     intFilledTiles = 0;
                     intCurrentPlayer = 0;
@@ -374,6 +379,18 @@ public class TicTacToe {
                     intCurrentPlayer = (int) (Math.random() * 2) + 1;
                 }
 
+                //DRAW WINS FOR CIRCLE PLAYER
+                con.setDrawColor(clrBlue);
+                con.fillOval(245, 20, 300 - 245, 75 - 20);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("" + intCircleWins, 267, 55);
+
+                //DRAW WINS FOR CROSS PLAYER
+                con.setDrawColor(clrRed);
+                con.fillOval(490, 20, 550 - 495, 75 - 20);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("" + intCrossWins, 512, 55);
+
                 //DRAW CURRENT PLAYER RECTANGLE WITH THE CORRECT PLAYER COLOR
                 if(intCurrentPlayer == 1){
                     con.setDrawColor(clrBlue);
@@ -384,9 +401,9 @@ public class TicTacToe {
                 //DRAW PLAYER NAME
                 con.setDrawColor(Color.BLACK);
                 if(intCurrentPlayer == 1){
-                    con.drawString(strCirclePlayer, 395 - (strCirclePlayer.length() * 6), 55);
+                    con.drawString(strCirclePlayer, 395 - (strCirclePlayer.length() * 7), 55);
                 }else{
-                    con.drawString(strCrossPlayer, 395 - (strCrossPlayer.length() * 6), 55);
+                    con.drawString(strCrossPlayer, 395 - (strCrossPlayer.length() * 7), 55);
                 }
 
                 //DRAW BLACK SQUARE FOR THE BOARD
@@ -412,287 +429,481 @@ public class TicTacToe {
                 con.setDrawColor(Color.BLACK);
                 con.drawString("Exit", 45, 55);
 
-                //LOOP THROUGH TILES
-                int intDefaultX = 160;
-                int intDefaultY = 100;
-                int intX;
-                int intY;
-                int intCountX = 0;
-                int intCountY = 0;
-                for(intCount = 0; intCount < 9; intCount++){
-                    //SET X AND Y COUNTERS
-                    if(intCountX >= 3){
-                        intCountX = 0;
-                        intCountY++;
-                    }
-
-                    //SPECIFY NEW X AND Y FOR THIS TILE
-                    intX = intDefaultX + (intCountX * (310 - 160)) + (10 * intCountX);
-                    intY = intDefaultY + (intCountY * (250 - 100)) + (5 * intCountY);
-
-                    //SET DEFAULT DRAW COLOR
-                    con.setDrawColor(Color.WHITE);
-
-                    //FIND THE CURRENT TILE
-                    if(intCount == 0){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile0 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                //CHECK IF THERE IS AN AI
+                int intAI = 0;
+                if(intCurrentPlayer == 1 && strCirclePlayer.equalsIgnoreCase("AI")){
+                    intAI = 1;
+                }else if(intCurrentPlayer == 2 && strCrossPlayer.equalsIgnoreCase("AI")){
+                    intAI = 1;
+                }
+                
+                //MAKE AI PICK WHERE IT WANTS TO PUT ITS PIECE
+                if(intAI == 1){
+                    for(intCount = 1; intCount <= 2; intCount++){
+                        //CHECK IF EACH POSIBLE ROW OR COLUMN HAS 2 OF THE SAME TILES THERE
+                        //IF SO, PLACE THE TILE IN THE 3RD TILE
+                        if(intTile1 == intCount && intTile2 == intCount){
+                            if(intTile0 == 0){
                                 intTile0 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 1){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile1 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile0 == intCount && intTile2 == intCount){
+                            if(intTile1 == 0){
                                 intTile1 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 2){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile2 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile0 == intCount && intTile1 == intCount){
+                            if(intTile2 == 0){
                                 intTile2 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 3){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile3 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile4 == intCount && intTile5 == intCount){
+                            if(intTile3 == 0){
                                 intTile3 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 4){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile4 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile3 == intCount && intTile5 == intCount){
+                            if(intTile4 == 0){
                                 intTile4 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 5){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile5 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile3 == intCount && intTile4 == intCount){
+                            if(intTile5 == 0){
                                 intTile5 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 6){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile6 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile7 == intCount && intTile8 == intCount){
+                            if(intTile6 == 0){
                                 intTile6 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 7){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile7 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile6 == intCount && intTile8 == intCount){
+                            if(intTile7 == 0){
                                 intTile7 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
                             }
-                        }
-                    }else if(intCount == 8){
-                        //CHECK IF THE TILE HAS ALREADY BEEN FILLED
-                        if(intTile8 > 0){
-                            //INCREASE NUMBER OF FILLED TILES
-                            intFilledTiles++;
-                            con.setDrawColor(clrGray);
-                            intTileFilled = 1;
-                        //CHECK IF MOUSE IS INSIDE OF THE TILE
-                        }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
-                                && intMouseY > intY && intMouseY < intY + (250 - 100)){
-                            //CHECK IF LEFT MOUSE BUTTON IS PRESSED
-                            if(intMouseButton == 1){
-                                //PLACE PIECE ON TILE
+                        }else if(intTile6 == intCount && intTile7 == intCount){
+                            if(intTile8 == 0){
                                 intTile8 = intCurrentPlayer;
                                 intPlaced = 1;
-                            }else{
-                                con.setDrawColor(clrGreen);
-                                intTileSelected = 1;
+                            }
+                        }else if(intTile3 == intCount && intTile6 == intCount){
+                            if(intTile0 == 0){
+                                intTile0 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile0 == intCount && intTile6 == intCount){
+                            if(intTile3 == 0){
+                                intTile3 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile0 == intCount && intTile3 == intCount){
+                            if(intTile6 == 0){
+                                intTile6 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile4 == intCount && intTile7 == intCount){
+                            if(intTile1 == 0){
+                                intTile1 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile1 == intCount && intTile7 == intCount){
+                            if(intTile4 == 0){
+                                intTile4 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile1 == intCount && intTile4 == intCount){
+                            if(intTile7 == 0){
+                                intTile7 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile5 == intCount && intTile8 == intCount){
+                            if(intTile2 == 0){
+                                intTile2 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile2 == intCount && intTile8 == intCount){
+                            if(intTile5 == 0){
+                                intTile5 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile2 == intCount && intTile5 == intCount){
+                            if(intTile8 == 0){
+                                intTile8 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile4 == intCount && intTile8 == intCount){
+                            if(intTile0 == 0){
+                                intTile0 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile0 == intCount && intTile8 == intCount){
+                            if(intTile4 == 0){
+                                intTile4 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile0 == intCount && intTile4 == intCount){
+                            if(intTile8 == 0){
+                                intTile8 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile4 == intCount && intTile6 == intCount){
+                            if(intTile2 == 0){
+                                intTile2 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile2 == intCount && intTile6 == intCount){
+                            if(intTile4 == 0){
+                                intTile4 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else if(intTile2 == intCount && intTile4 == intCount){
+                            if(intTile6 == 0){
+                                intTile6 = intCurrentPlayer;
+                                intPlaced = 1;
+                            }
+                        }else{
+                            //IF THERE ARE NO ROWS OR COLUMNS WITH 2 PIECES ALREADY PLACED ON THEM
+                            //THEN JUST PLACE A TILE IN THE FIRST AVAILABLE TILE
+                            for(intCount = 0; intCount < 9; intCount++){
+                                //CHECK IF IT HASN'T PLACED A TILE YET
+                                if(intPlaced == 0){
+                                    if(intCount == 0){
+                                        if(intTile0 == 0){
+                                            intTile0 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 1){
+                                        if(intTile1 == 0){
+                                            intTile1 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 2){
+                                        if(intTile2 == 0){
+                                            intTile2 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 3){
+                                        if(intTile3 == 0){
+                                            intTile3 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 4){
+                                        if(intTile4 == 0){
+                                            intTile4 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 5){
+                                        if(intTile5 == 0){
+                                            intTile5 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 6){
+                                        if(intTile6 == 0){
+                                            intTile6 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 7){
+                                        if(intTile7 == 0){
+                                            intTile7 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }else if(intCount == 8){
+                                        if(intTile8 == 0){
+                                            intTile8 = intCurrentPlayer;
+                                            intPlaced = 1;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                    
-                    //DRAW CURRENT TILE
-                    con.fillRect(intX, intY, 310 - 160, 250 - 100);
-
-                    //DRAW SMALL PIECE IF TILE IS BEING HOVERED OVER
-                    if(intTileSelected == 1){
-                        intTileSelected = 0;
-                        //CHECK WHO'S PLAYER TURN IT IS
-                        if(intCurrentPlayer == 1){
-                            con.drawImage(imgCircle1, intX, intY + 20);
-                        }else{
-                            con.drawImage(imgCross1, intX + 5, intY + 20);
+                    //IF THERE ARE ANY PROBLEMS AND IT DOESN'T FIND A PLACE TO PLACE A TILE
+                    //JUST SAY IT PLACED A TILE WITHOUT ACTUALLY DOING SO
+                    intPlaced = 1;
+                }else{
+                    //SINCE THE PLAYER IS IN CONTROL, LET THE PLAYER PLACE TILES AND VICE-VERSA
+                    //LOOP THROUGH TILES
+                    int intDefaultX = 160;
+                    int intDefaultY = 100;
+                    int intX;
+                    int intY;
+                    int intCountX = 0;
+                    int intCountY = 0;
+                    for(intCount = 0; intCount < 9; intCount++){
+                        //SET X AND Y COUNTERS
+                        if(intCountX >= 3){
+                            intCountX = 0;
+                            intCountY++;
                         }
-                    }
 
-                    //DRAW BIG PIECE IF TILE IS FILLED
-                    if(intTileFilled == 1){
-                        intTileFilled = 0;
-                        //CHECK WHAT PIECE IS IN THIS TILE AND DRAW IT
+                        //SPECIFY NEW X AND Y FOR THIS TILE
+                        intX = intDefaultX + (intCountX * (310 - 160)) + (10 * intCountX);
+                        intY = intDefaultY + (intCountY * (250 - 100)) + (5 * intCountY);
+
+                        //SET DEFAULT DRAW COLOR
+                        con.setDrawColor(Color.WHITE);
+
+                        //FIND THE CURRENT TILE
                         if(intCount == 0){
-                            if(intTile0 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile0 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile0 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile0 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 1){
-                            if(intTile1 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile1 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile1 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile1 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 2){
-                            if(intTile2 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile2 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile2 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile2 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 3){
-                            if(intTile3 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile3 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile3 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile3 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 4){
-                            if(intTile4 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile4 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile4 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile4 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 5){
-                            if(intTile5 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile5 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile5 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile5 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 6){
-                            if(intTile6 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile6 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile6 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile6 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 7){
-                            if(intTile7 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile7 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile7 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile7 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }else if(intCount == 8){
-                            if(intTile8 == 1){
-                                con.drawImage(imgCircle2, intX - 44, intY - 14);
-                            }else if(intTile8 == 2){
-                                con.drawImage(imgCross2, intX - 43, intY - 13);
+                            //CHECK IF THE TILE HAS ALREADY BEEN FILLED
+                            if(intTile8 > 0){
+                                //INCREASE NUMBER OF FILLED TILES
+                                intFilledTiles++;
+                                con.setDrawColor(clrGray);
+                                intTileFilled = 1;
+                            //CHECK IF MOUSE IS INSIDE OF THE TILE
+                            }else if(intMouseX > intX && intMouseX < intX + (310 - 160)
+                                    && intMouseY > intY && intMouseY < intY + (250 - 100)){
+                                //CHECK IF LEFT MOUSE BUTTON IS PRESSED
+                                if(intMouseButton == 1){
+                                    //PLACE PIECE ON TILE
+                                    intTile8 = intCurrentPlayer;
+                                    intPlaced = 1;
+                                }else{
+                                    con.setDrawColor(clrGreen);
+                                    intTileSelected = 1;
+                                }
                             }
                         }
-                    }
 
-                    //INCREASE X COUNT
-                    intCountX++;
+                        //DRAW CURRENT TILE
+                        con.fillRect(intX, intY, 310 - 160, 250 - 100);
+
+                        //DRAW SMALL PIECE IF TILE IS BEING HOVERED OVER
+                        if(intTileSelected == 1){
+                            intTileSelected = 0;
+                            //CHECK WHO'S PLAYER TURN IT IS
+                            if(intCurrentPlayer == 1){
+                                con.drawImage(imgCircle1, intX, intY + 20);
+                            }else{
+                                con.drawImage(imgCross1, intX + 5, intY + 20);
+                            }
+                        }
+
+                        //DRAW BIG PIECE IF TILE IS FILLED
+                        if(intTileFilled == 1){
+                            intTileFilled = 0;
+                            //CHECK WHAT PIECE IS IN THIS TILE AND DRAW IT
+                            if(intCount == 0){
+                                if(intTile0 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile0 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 1){
+                                if(intTile1 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile1 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 2){
+                                if(intTile2 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile2 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 3){
+                                if(intTile3 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile3 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 4){
+                                if(intTile4 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile4 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 5){
+                                if(intTile5 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile5 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 6){
+                                if(intTile6 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile6 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 7){
+                                if(intTile7 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile7 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }else if(intCount == 8){
+                                if(intTile8 == 1){
+                                    con.drawImage(imgCircle2, intX - 44, intY - 14);
+                                }else if(intTile8 == 2){
+                                    con.drawImage(imgCross2, intX - 43, intY - 13);
+                                }
+                            }
+                        }
+                        //INCREASE X COUNT
+                        intCountX++;
+                    }
                 }
 
                 //CHECK IF A TILE HAS BEEN PLACED
@@ -729,8 +940,16 @@ public class TicTacToe {
                 
                 //IF THERE'S A WINNER, SWAP TO THE GAME OVER SCREEN
                 if(intWinner > 0){
+                    //INCREASE THE SCORE OF THE WINNER
+                    if(intWinner == 1){
+                        intCircleWins++;
+                    }else if(intWinner == 2){
+                        intCrossWins++;
+                    }
+                    //SWAP TO GAME OVER SCREEN AND RESET VARS
                     intSwapScreen = 4;
                     intVarsInit = 0;
+                    con.sleep(1000);
                 //IF THERE IS NO WINNER BUT ALL TILES ARE FILLED, GO TO THE TIE SCREEN
                 }else if(intFilledTiles >= 9){
                     intSwapScreen = 3;
@@ -744,30 +963,46 @@ public class TicTacToe {
                 //DRAW BACKGROUND CIRCLE AND CROSS
                 con.drawImage(imgCross4, 250, 95);
                 con.drawImage(imgCircle4, -30, 95);
+
                 //DRAW TIE WITH ENLARGED FONT
                 con.setDrawFont(fntBig);
                 con.setDrawColor(Color.WHITE);
                 con.drawString("TIE", 120, 420);
+
                 //REPAINT AHEAD OF TIME
                 con.repaint();
+
                 //GO BACK TO THE GAME SCREEN AFTER 3 SECONDS
                 intSwapScreen = 2;
                 con.sleep(3000);
             }else if(intScreen == 4){
                 //SET MEDIUM FONT
                 con.setDrawFont(fntMedium);
+
                 //DRAW CIRCLE OR CROSS AND THE NAME OF THE PLAYER WHO WON
                 con.setDrawColor(Color.BLACK);
                 if(intWinner == 1){
                     con.drawImage(imgCircle4, 120, -50);
-                    con.drawString(strCirclePlayer + " Wins!", 360 - ((strCirclePlayer.length() + 6) * 6), 160);
+                    con.drawString(strCirclePlayer + " Wins!", 360 - ((strCirclePlayer.length() + 5) * 7), 160);
                 }else if(intWinner == 2){
                     con.drawImage(imgCross4, 130, -50);
-                    con.drawString(strCrossPlayer + " Wins!", 360 - ((strCirclePlayer.length() + 6) * 6), 160);
+                    con.drawString(strCrossPlayer + " Wins!", 360 - ((strCrossPlayer.length() + 5) * 7), 160);
                 }
 
                 //SET DEFAULT FONT
                 con.setDrawFont(fntNormal);
+
+                //DRAW WINS FOR CIRCLE PLAYER
+                con.setDrawColor(clrBlue);
+                con.fillOval(180, 20, 235 - 180, 75 - 20);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("" + intCircleWins, 202, 55);
+
+                //DRAW WINS FOR CROSS PLAYER
+                con.setDrawColor(clrRed);
+                con.fillOval(560, 20, 615 - 560, 75 - 20);
+                con.setDrawColor(Color.BLACK);
+                con.drawString("" + intCrossWins, 582, 55);
 
                 //CHECK IF MOUSE IS INSIDE OF THE PLAY AGAIN BUTTON
                 if((intMouseX > 240 && intMouseX < 555) && (intMouseY > 290 && intMouseY < 360)){
@@ -829,5 +1064,4 @@ public class TicTacToe {
         
         con.closeConsole();
     }
-
 }
